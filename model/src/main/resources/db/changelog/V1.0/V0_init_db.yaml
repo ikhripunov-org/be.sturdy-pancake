@@ -1,0 +1,75 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1539170687_create_customer_table
+      author: Igor Khripunov
+      changes:
+        - createTable:
+            tableName: customer
+            columns:
+            - column:
+                name: id
+                type: bigint
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: external_id
+                type: VARCHAR(36)
+                constraints:
+                  nullable: false
+                  unique: true
+            - column:
+                name: status
+                type: ENUM('PROSPECTIVE', 'CURRENT', 'High')
+                constraints:
+                  nullable: false
+            - column:
+                name: created
+                type: bigint
+                constraints:
+                  nullable: false
+            - column:
+                name: name
+                type: VARCHAR(255)
+                constraints:
+                  nullable: false
+            - column:
+                name: details
+                type: VARCHAR(255)
+  - changeSet:
+      id: 1539170688_create_note_table
+      author: Igor Khripunov
+      changes:
+      - createTable:
+          tableName: note
+          columns:
+            - column:
+                name: id
+                type: bigint
+                autoIncrement: true
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: customer_id
+                type: bigint
+                constraints:
+                  nullable: false
+            - column:
+                name: external_id
+                type: VARCHAR(36)
+                constraints:
+                  nullable: false
+                  unique: true
+            - column:
+                name: content
+                type: VARCHAR(255)
+      - addForeignKeyConstraint:
+          baseColumnNames: customer_id
+          baseTableName: note
+          constraintName: fk_note_customer
+          onDelete: CASCADE
+          onUpdate: RESTRICT
+          referencedColumnNames: id
+          referencedTableName: customer
