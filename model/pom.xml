@@ -36,7 +36,7 @@
                         <artifactId>liquibase-maven-plugin</artifactId>
                         <version>3.5.5</version>
                         <configuration>
-                            <changeLogFile>db/changelog/db.changelog-master.xml</changeLogFile>
+                            <changeLogFile>src/main/resources/db/changelog/db.changelog-master.yaml</changeLogFile>
                             <driver>com.mysql.cj.jdbc.Driver</driver>
                             <url>jdbc:mysql://localhost:3306/customers?createDatabaseIfNotExist=true</url>
                             <username>root</username>
