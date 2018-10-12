@@ -1,0 +1,5 @@
+{
+  "apiPackage": "org.ikhripunov.pancake.api",
+  "modelPackage": "org.ikhripunov.pancake.model",
+  "invokerPackage": "org.ikhripunov.pancake.invoker"
+}

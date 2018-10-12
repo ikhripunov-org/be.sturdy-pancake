@@ -1,0 +1,173 @@
+swagger: "2.0"
+info:
+  description: "This is a demo swagger project"
+  version: "1.0.0"
+  title: "Demo"
+tags:
+- name: "customer"
+  description: "Everything about customers"
+consumes:
+- application/json
+produces:
+- application/json
+schemes:
+- "https"
+- "http"
+paths:
+  /customers:
+    get:
+      summary: List customers applying filters
+      description: Lists customers from the database applying filters
+      parameters:
+      - name: name
+        in: query
+        type: string
+        description: Search for customer name
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/customer'
+    post:
+      summary: Creates customer
+      description: ""
+      parameters:
+      - name: customer
+        in: body
+        schema:
+          $ref: '#/definitions/customer'
+      responses:
+        200:
+          description: OK
+  /customers/{customerId}:
+    parameters:
+    - name: customerId
+      in: path
+      type: string
+      format: uuid
+      required: true
+    get:
+      summary: ""
+      description: ""
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/customer'
+    put:
+      summary: ""
+      description: ""
+      parameters:
+      - name: customer
+        in: body
+        schema:
+          $ref: '#/definitions/customer'
+      responses:
+        200:
+          description: OK
+    delete:
+      summary: ""
+      description: ""
+      responses:
+        200:
+          description: OK
+  /customers/{customerId}/notes:
+    parameters:
+    - name: customerId
+      in: path
+      type: string
+      format: uuid
+      required: true
+    post:
+      summary: ""
+      description: ""
+      parameters:
+      - name: note
+        in: body
+        schema:
+          $ref: '#/definitions/note'
+      responses:
+        200:
+          description: OK
+  /customers/notes/{noteId}:
+    parameters:
+    - name: noteId
+      in: path
+      type: string
+      format: uuid
+      required: true
+    put:
+      summary: ""
+      description: ""
+      parameters:
+      - name: note
+        in: body
+        schema:
+          $ref: '#/definitions/note'
+      responses:
+        200:
+          description: OK
+    delete:
+      summary: ""
+      description: ""
+      responses:
+        200:
+          description: OK
+  '/ping':
+    get:
+      operationId: ping
+      summary: Ping endpoint
+      produces:
+      - text/plain
+      responses:
+        '200':
+          description: 'Manifest information'
+          schema:
+            type: string
+definitions:
+  customer:
+    title: customer
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+        description: Unique customer identifier.
+      status:
+        type: string
+        enum:
+        - "PROSPECTIVE"
+        - "CURRENT"
+        - "NON_ACTIVE"
+        description: Customer status.
+      created:
+        type: integer
+        format: int64
+        description: Created timestamp.
+      name:
+        type: string
+        description: Customer name.
+      details:
+        type: string
+        description: Customer contact details.
+      notes:
+        type: array
+        items:
+          $ref: '#/definitions/note'
+        description: Notes associated with customer.
+    required:
+    - status
+    - name
+  note:
+    title: note
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+        description: Unique note identifier.
+      content:
+        type: string
+        description: Note contents.
