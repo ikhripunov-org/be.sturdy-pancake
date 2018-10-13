@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1539170688_create_data
+      author: Igor Khripunov
+      changes:
+        - sql:
+            dbms: mysql
+            splitStatements: true
+            sql: INSERT INTO `customers`.`customer` (`id`, `external_id`, `status`, `created`, `name`, `details`) VALUES ('1', 'ee76d2b9-cdda-49c5-83ae-a3ff2a57aa91', 'PROSPECTIVE', 1539386888983, 'foooo', '65-65-65')
+        - sql:
+            dbms: mysql
+            splitStatements: true
+            sql: INSERT INTO `customers`.`customer` (`id`, `external_id`, `status`, `created`, `name`, `details`) VALUES ('2', 'ee76d2b9-cdda-49c5-83ae-a3ff2a57aa93', 'CURRENT', 1539386888985, 'bar baz', '555 35 35')
+        - sql:
+            dbms: mysql
+            splitStatements: true
+            sql: INSERT INTO `customers`.`customer` (`id`, `external_id`, `status`, `created`, `name`, `details`) VALUES ('3', 'ee76d2b9-cdda-49c5-83ae-a3ff2a57aa24', 'NON_ACTIVE', 1539386888985, 'fizz buzz', '32412343')
+        - sql:
+            dbms: mysql
+            splitStatements: true
+            sql: INSERT INTO `customers`.`customer` (`id`, `external_id`, `status`, `created`, `name`, `details`) VALUES ('4', 'ee76d2b9-cdda-49c5-83ae-a3ff2a57aa83', 'CURRENT', 1539386888985, 'tar jazzz', '2342 35')
+        - sql:
+            dbms: mysql
+            splitStatements: true
+            sql: INSERT INTO `customers`.`customer` (`id`, `external_id`, `status`, `created`, `name`, `details`) VALUES ('5', 'ee76d2b9-cdda-49c5-83ae-a3ff2a87aa93', 'CURRENT', 1539386888985, 'beez wax', '2342341')

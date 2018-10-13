@@ -1,3 +1,5 @@
 databaseChangeLog:
 - include:
     file: db/changelog/V1.0/V0_init_db.yaml
+- include:
+    file: db/changelog/V1.0/V1_insert_dummy_data.yaml
