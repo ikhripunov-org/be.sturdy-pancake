@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Resources extends ResourceConfig {
     public Resources() {
+        register(org.ikhripunov.pancake.configuration.CorsFilter.class);
         register(org.ikhripunov.pancake.api.CustomersApi.class);
         register(org.ikhripunov.pancake.api.PingApi.class);
     }
