@@ -6,6 +6,8 @@ import org.ikhripunov.pancake.jooq.tables.daos.CustomerDao;
 import org.ikhripunov.pancake.jooq.tables.daos.NoteDao;
 import org.ikhripunov.pancake.jooq.tables.pojos.Customer;
 import org.ikhripunov.pancake.jooq.tables.pojos.Note;
+import org.ikhripunov.pancake.jooq.tables.records.CustomerRecord;
+import org.ikhripunov.pancake.jooq.tables.records.NoteRecord;
 import org.joda.time.DateTime;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -13,10 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+import static org.ikhripunov.pancake.jooq.Tables.NOTE;
 import static org.ikhripunov.pancake.jooq.tables.Customer.CUSTOMER;
 
 @Controller
@@ -39,10 +45,13 @@ public class CustomersController {
         if (StringUtils.isNotEmpty(name)) {
             conditions.add(CUSTOMER.NAME.likeIgnoreCase(name));
         }
-        return dslContext.select().from(CUSTOMER).where(conditions.toArray(new Condition[0]))
-                .fetchInto(Customer.class).stream()
-                .map(customer -> mapper.map(customer, org.ikhripunov.pancake.model.Customer.class))
-                .collect(Collectors.toList());
+        return dslContext.select(CUSTOMER.fields()).select(NOTE.fields())
+                .from(CUSTOMER).leftJoin(NOTE).on(NOTE.CUSTOMER_ID.eq(CUSTOMER.ID))
+                .where(conditions.toArray(new Condition[0]))
+                .fetchGroups(
+                        customer -> mapper.map(customer.into(CustomerRecord.class).into(Customer.class), org.ikhripunov.pancake.model.Customer.class),
+                        note -> mapper.map(note.into(NoteRecord.class).into(Note.class), org.ikhripunov.pancake.model.Note.class)
+                ).entrySet().stream().map(entry -> entry.getKey().notes(entry.getValue())).collect(toList());
     }
 
     public void createCustomer(org.ikhripunov.pancake.model.Customer customer) {
@@ -61,8 +70,10 @@ public class CustomersController {
     }
 
     public void updateCustomer(UUID customerId, org.ikhripunov.pancake.model.Customer customer) {
-        customer.setId(customerId);
-        customerDao.update(mapper.map(customer, Customer.class));
+        Customer existing = customerDao.fetchOneByExternalId(customerId.toString());
+        Customer updated = mapper.map(customer, Customer.class);
+        updated.setId(existing.getId());
+        customerDao.update(updated);
     }
 
     public void addNoteForCustomer(UUID customerId, org.ikhripunov.pancake.model.Note note) {

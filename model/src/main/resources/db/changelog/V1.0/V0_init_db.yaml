@@ -21,7 +21,7 @@ databaseChangeLog:
                   unique: true
             - column:
                 name: status
-                type: ENUM('PROSPECTIVE', 'CURRENT', 'High')
+                type: ENUM('PROSPECTIVE', 'CURRENT', 'NON_ACTIVE')
                 constraints:
                   nullable: false
             - column:

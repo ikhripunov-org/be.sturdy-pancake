@@ -6,11 +6,13 @@ import org.ikhripunov.pancake.model.Customer;
 import org.ikhripunov.pancake.model.Note;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
+@CrossOrigin(origins = "http://localhost:8081")
 @Controller
 public class CustomersApiImpl implements CustomersApi {
 
